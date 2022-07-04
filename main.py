@@ -99,9 +99,15 @@ def part_two():
         # Handle the Fezz after standard rules
         if i % 13 == 0:
             # Use a step of 4, as all strings are 4 characters
+            # Quicker than using find() as we don't need to check every character!
+            done = False
             for c in range(0, len(output), 4):
                 if output[c] == "B":
                     output = output[:c] + "Fezz" + output[c:]
+                    done = True
+                    break
+            if not done:
+                output += "Fezz"
 
         # Reverse here using string manipulation. Not the technical fastest solution in terms of execution time
         # but the best looking statement as opposed to over arching if statements with repeating code.
