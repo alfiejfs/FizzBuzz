@@ -1,3 +1,4 @@
+### Could we delete any redundent or unused code
 def part_one():
     """
     for i in range(1, 101):
@@ -41,6 +42,8 @@ For the case of multiple of 7, does not say what to do if the number is a multip
 The number multiple of 11 statement says "Do not print anything else in these cases", and then the multiple of 13 
 statement says that it should also apply to those with bong in it.
 """
+
+### Do you think you could come up with a better name for this function that better descirbes what it does
 def part_two():
     standard_rules = {
         3: "Fizz",
@@ -60,6 +63,7 @@ def part_two():
 
     while True:
 
+        ### These instuctions are not very clear, once again simplicity is the way to go
         response = input("Add a custom four letter word. Enter a multiple (cannot be 3, 5, 7, 11, 13 or 17). "
                          "Type q to run the count: ")
         if response == "q":
@@ -86,11 +90,14 @@ def part_two():
         standard_rules[number] = word
         print("Assigned " + word + " to " + str(number))
 
+        
+    ### could we sperate out the fizzbuzz logic below into it's own function seperate from the user inputs    
     for i in range(1, upper_bound + 1):
         output = ""
         if i % 11 == 0:
             output = "Bong"
-
+        
+        ### This could simplified by turning the above if statement into an if else statement
         if output != "Bong":
             for key, value in standard_rules.items():
                 if i % key == 0:
@@ -100,6 +107,10 @@ def part_two():
         if i % 13 == 0:
             # Use a step of 4, as all strings are 4 characters
             # Quicker than using find() as we don't need to check every character!
+            
+            ### All though in practice this is quicker then using find() when the code we are writing does not need to be performent we always prioritise readability of the code
+            ### It's normally always best to go for the simplest solution! Try not to over think it!
+            ### If you want to have a discssion about why we're prioritsing readability of performance please let me know! :)
             done = False
             for c in range(0, len(output), 4):
                 if output[c] == "B":
@@ -112,6 +123,10 @@ def part_two():
         # Reverse here using string manipulation. Not the technical fastest solution in terms of execution time
         # but the best looking statement as opposed to over arching if statements with repeating code.
 
+        ### This works fine for the specific cases that we have been given but this will fail to work if we start including words that are not 4 letters long
+        ### When you're writing code you always want to think about the future an what futre requirements and changes could be made and write code with them in mind
+        ### Because of this what I would suggest instead is instead of storing the output as a string throughout this process, instead storing it as an array of strings
+        ### Do could you go back through and update your code with this in mind :)
         if i % 17 == 0:
             # Could use regex to split by characters, but all strings are 4 letters, so for this we can use that.
             new_output = ""
