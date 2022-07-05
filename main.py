@@ -1,14 +1,3 @@
-def part_one():
-    # Write it nicely - this way is easily extendable with hardcoded simple rules as opposed to the above
-    for i in range(1, 101):
-        output = ""
-        if i % 3 == 0:
-            output += "Fizz"
-        if i % 5 == 0:
-            output += "Buzz"
-        print(i) if output == "" else print(output)
-
-
 """
 This includes extension tasks. 
 
@@ -23,8 +12,6 @@ For the case of multiple of 7, does not say what to do if the number is a multip
 The number multiple of 11 statement says "Do not print anything else in these cases", and then the multiple of 13 
 statement says that it should also apply to those with bong in it.
 """
-
-### Do you think you could come up with a better name for this function that better descirbes what it does
 def start_fizz_buzz():
     rules = {
         3: "Fizz",
