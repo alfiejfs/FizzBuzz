@@ -1,17 +1,4 @@
-### Could we delete any redundent or unused code
 def part_one():
-    """
-    for i in range(1, 101):
-        if i % 3 == 0 and i % 5 == 0:
-            print("FizzBuzz")
-        elif i % 3 == 0:
-            print("Fizz")
-        elif i % 5 == 0:
-            print("Buzz")
-        else:
-            print(i)
-    """
-
     # Write it nicely - this way is easily extendable with hardcoded simple rules as opposed to the above
     for i in range(1, 101):
         output = ""
@@ -19,17 +6,11 @@ def part_one():
             output += "Fizz"
         if i % 5 == 0:
             output += "Buzz"
-        if output == "":
-            output += i
-
-        print(output)
+        print(i) if output == "" else print(output)
 
 
 """
-This includes extension tasks.
-
-LIMITATION: Custom words must be 4 characters.
-SOLUTION: Use regex instead of assuming words are 4 characters. Just feels slightly unnecessary 
+This includes extension tasks. 
 
 Noticed ambiguities:
 
@@ -44,8 +25,8 @@ statement says that it should also apply to those with bong in it.
 """
 
 ### Do you think you could come up with a better name for this function that better descirbes what it does
-def part_two():
-    standard_rules = {
+def start_fizz_buzz():
+    rules = {
         3: "Fizz",
         5: "Buzz",
         7: "Bang"
@@ -62,10 +43,8 @@ def part_two():
             print("Please enter a positive integer (whole number >= 0)")
 
     while True:
+        response = input("To add a custom rule, enter a number. Type q to run FizzBuzz: ")
 
-        ### These instuctions are not very clear, once again simplicity is the way to go
-        response = input("Add a custom four letter word. Enter a multiple (cannot be 3, 5, 7, 11, 13 or 17). "
-                         "Type q to run the count: ")
         if response == "q":
             break
 
@@ -79,66 +58,55 @@ def part_two():
             print("Please enter a positive integer (whole number >= 0)")
             continue
 
-        if number in standard_rules or number == 11 or number == 13 or number == 17:
+        if number in rules or number == 11 or number == 13 or number == 17:
             print("That number has already been assigned.")
             continue
 
-        word = ""
-        while len(word) != 4:
-            word = input("Enter a four letter word to match to multiples of " + str(number) + ": ")
-        word = word[0].upper() + word[1:] # Keep the formatting
-        standard_rules[number] = word
+        word = input("Enter a word: ")
+        word = word[0].upper() + word[1:].lower() # Keep the formatting with upper then lower
+        rules[number] = word
         print("Assigned " + word + " to " + str(number))
 
-        
-    ### could we sperate out the fizzbuzz logic below into it's own function seperate from the user inputs    
+    handle_fizz_buzz(upper_bound, rules)
+
+
+def handle_fizz_buzz(upper_bound, rules):
     for i in range(1, upper_bound + 1):
-        output = ""
+        output = []
         if i % 11 == 0:
-            output = "Bong"
-        
-        ### This could simplified by turning the above if statement into an if else statement
-        if output != "Bong":
-            for key, value in standard_rules.items():
+            output.append("Bong")
+        else:
+            for key, value in rules.items():
                 if i % key == 0:
-                    output += value
+                    output.append(value)
 
         # Handle the Fezz after standard rules
         if i % 13 == 0:
             # Use a step of 4, as all strings are 4 characters
             # Quicker than using find() as we don't need to check every character!
-            
-            ### All though in practice this is quicker then using find() when the code we are writing does not need to be performent we always prioritise readability of the code
-            ### It's normally always best to go for the simplest solution! Try not to over think it!
-            ### If you want to have a discssion about why we're prioritsing readability of performance please let me know! :)
-            done = False
-            for c in range(0, len(output), 4):
-                if output[c] == "B":
-                    output = output[:c] + "Fezz" + output[c:]
-                    done = True
+
+            b_index = -1
+            for j in range(len(output)):
+                if output[j].startswith("B"):
+                    b_index = j
                     break
-            if not done:
-                output += "Fezz"
+                    
+            if b_index == -1:
+                output.append("Fezz")
+            else:
+                output.insert(b_index, "Fezz")
 
         # Reverse here using string manipulation. Not the technical fastest solution in terms of execution time
         # but the best looking statement as opposed to over arching if statements with repeating code.
 
-        ### This works fine for the specific cases that we have been given but this will fail to work if we start including words that are not 4 letters long
-        ### When you're writing code you always want to think about the future an what futre requirements and changes could be made and write code with them in mind
-        ### Because of this what I would suggest instead is instead of storing the output as a string throughout this process, instead storing it as an array of strings
-        ### Do could you go back through and update your code with this in mind :)
         if i % 17 == 0:
-            # Could use regex to split by characters, but all strings are 4 letters, so for this we can use that.
-            new_output = ""
-            for i in range(len(output), 0, -4):
-                new_output += output[i-4:i]
-
-            output = new_output
+            output.reverse()
 
         # For cases where no rules apply:
-        if output == "":
-            output = i
+        if not output: # Empty list is not truthy
+            print(i)
+        else:
+            print("".join(output))
 
-        print(output)
 
-part_two()
+start_fizz_buzz()
